@@ -46,8 +46,8 @@ mongoose.connect(process.env.MONGO_URI.replace("${PASSWORD}", password))
   //   console.log("Server is running on port and host " + PORT + " " + HOST);
   // }) 
   
-  https.createServer(sslOptions, app).listen(port, host, () => {
-    console.log("App listening securely at https://${host}:${port}");
+  https.createServer(sslOptions, app).listen(PORT, HOST, () => {
+    console.log(`App listening securely at https://${HOST}:${PORT}`);
   });
 })
 .catch((err) => {
