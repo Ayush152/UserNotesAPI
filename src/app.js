@@ -12,6 +12,7 @@ const mongoose = require("mongoose");
 const password = encodeURIComponent(process.env.PASSWORD);
 
 const PORT = process.env.PORT || 8000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 app.use(express.json());
 app.use(cors());
@@ -31,8 +32,8 @@ app.get("/", (req, res) => {
 
 mongoose.connect(process.env.MONGO_URI.replace("${PASSWORD}", password))
 .then(() => {
-  app.listen(PORT, () => {
-    console.log("Server is running on port " + PORT);
+  app.listen(PORT, HOST, () => {
+    console.log("Server is running on port and host " + PORT + " " + HOST);
   })  
 })
 .catch((err) => {
