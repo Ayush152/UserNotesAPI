@@ -1,7 +1,17 @@
 const dotenv = require("dotenv");
 dotenv.config()
+
+const fs = require('fs');
+const https = require('https');
+
 const express = require("express");
 const app = express();
+
+// Path to the SSL certificate and key
+const sslOptions = {
+  key: fs.readFileSync('server.key', 'utf8'),
+  cert: fs.readFileSync('server.cert', 'utf8')
+};
 
 const userRouter = require("./routes/userRoutes");
 const noteRouter = require("./routes/noteRoutes");
@@ -32,9 +42,13 @@ app.get("/", (req, res) => {
 
 mongoose.connect(process.env.MONGO_URI.replace("${PASSWORD}", password))
 .then(() => {
-  app.listen(PORT, HOST, () => {
-    console.log("Server is running on port and host " + PORT + " " + HOST);
-  })  
+  // app.listen(PORT, HOST, () => {
+  //   console.log("Server is running on port and host " + PORT + " " + HOST);
+  // }) 
+  
+  https.createServer(sslOptions, app).listen(port, host, () => {
+    console.log("App listening securely at https://${host}:${port}");
+  });
 })
 .catch((err) => {
   console.log(err);
